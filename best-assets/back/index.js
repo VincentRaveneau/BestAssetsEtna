@@ -52,6 +52,18 @@ async function getUsers(login) {
   return user
 }
 
+async function getAssets() {
+  const asset = await Assets.findAll()
+  return asset
+}
+
+async function get_specific_asset(login) {
+  const asset = await Assets.findOne({where: {Login: login}})
+  if (!asset)
+    throw ("asset not found")
+  return asset
+}
+
 async function vote_for_asset(login, asset) {
   const user = await User.findOne({ where: { Login: login } })
   const voted = await Assets.findOne({ where: { Login: asset } })
@@ -98,6 +110,17 @@ async function startServer() {
         res.send(user);
     } catch (e) {
         res.send(e);
+    }
+  })
+
+  app.get('/assets', async (req, res) => {
+    try {
+      if (!req.params)
+        res.send(getAssets())
+      else
+        res.send(get_specific_asset(req.params))
+    } catch (e) {
+      res.send(e)
     }
   })
 
