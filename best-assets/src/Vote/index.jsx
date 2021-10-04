@@ -15,7 +15,6 @@ export const Vote = () => {
         'blanch_g',
         'ravene_v',
         'frikha_a',
-        'lambri_n',
         'padova_n',
         'hu_f',
         'ansard_k',
