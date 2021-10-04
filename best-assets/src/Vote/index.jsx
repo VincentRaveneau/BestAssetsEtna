@@ -5,7 +5,12 @@ import QueryString from 'qs';
 
 export const Vote = () => {
 
-    const [voted, setHasVoted] = useState(false);
+    const [voted, setHasVoted] = useState(()=> {
+        if (localStorage.getItem("voted"))
+            return true
+        else
+            return false;
+    });
     const [voteOpen, setVoteOpen] = useState(false);
     const [choice, setChoice] = useState("");
     const [login, setLogin] = useState("");
@@ -24,6 +29,8 @@ export const Vote = () => {
           axios(config)
             .then(function (response) {
                 setHasVoted(true)
+                setVoteOpen(false);
+                localStorage.setItem("voted", "ok")
             })
             .catch(function (error) {
                 console.log(error.message);
@@ -87,9 +94,10 @@ export const Vote = () => {
                                         <Picture onClick={() => {setChoice(AssetsTab[i + 4]); setVoteOpen(true)}} src={`https://auth.etna-alternance.net/api/users/${AssetsTab[i + 4]}/photo?size=medium`}/>
                                         <Name> {AssetsTab[i + 4]} </Name>
                                     </div>
-                                {voteOpen ?
+                                {voteOpen && !voted?
                                 <FormModal>
                                     <CardFormContainer>
+                                        <div style={{position: "relative", marginLeft: "80%"}}onClick={() => {setVoteOpen(false)}}> Fermer </div>
                                         <div style={{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", width: "240px", height: "300px"}}>
                                             <Picture src={`https://auth.etna-alternance.net/api/users/${choice}/photo?size=medium`}/>
                                             <Name> {AssetsTab[i + 4]} </Name>
