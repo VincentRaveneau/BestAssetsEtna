@@ -3,6 +3,9 @@ const { Sequelize, DataTypes } = require('sequelize')
 const app = express()
 const bodyParser = require('body-parser')
 const port = 3000
+const cors = require('cors');
+app.use(cors());
+app.options('*', cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -11,6 +14,7 @@ const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: 'db.sqlite'
 })
+
 
 const User = sequelize.define('User', {
   Login: {
@@ -82,6 +86,11 @@ async function startServer() {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }))
 
+  app.all('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+   });
+  
   app.get('/', (req, res) => {
     res.send('Hello World!')
   })
