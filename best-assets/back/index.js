@@ -2,7 +2,6 @@ const express = require('express')
 const { Sequelize, DataTypes } = require('sequelize')
 const app = express()
 const bodyParser = require('body-parser')
-const { TreeRepository } = require('typeorm')
 const port = 3000
 
 app.use(bodyParser.json());
