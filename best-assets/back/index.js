@@ -71,8 +71,9 @@ async function vote_for_asset(login, asset) {
   if (user.Has_voted == true)
     throw ("User already voted")
   else {
-    user.Has_voted = true;
-    voted.nb_votes += 1;
+    User.update( { Has_voted : true}, { where : { Login : login } })
+    Assets.update( { nb_votes : voted.nb_votes + 1}, { where : { Login: asset } })
+    return
   }
 }
 
@@ -133,7 +134,7 @@ async function startServer() {
         await vote_for_asset(req.body.Login, req.body.Asset);
       }
     } catch (e) {
-
+      res.send(e);
     }
   })
 
